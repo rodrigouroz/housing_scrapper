@@ -79,7 +79,7 @@ You're all set. Now run `python3 main.py` and sit tight!
 
 Well, perhaps `testing` is a big word for this. You can run a module that tests that the providers configured can properly scrap information. If they work, you should see the listings in your console.
 
-To test: `pyhon3 -m tests`
+To test: `python3 -m tests`
 
 ## Running
 
