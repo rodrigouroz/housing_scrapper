@@ -69,6 +69,10 @@ providers:
     sources:
       - '/departamentos/alquiler/2-dormitorios/'
       - '/casas/alquiler/2-dormitorios/'
+  properati:
+    base_url: 'https://www.properati.com.ar/'
+    sources:
+      - '/departamento/alquiler/ambientes:2/'
 ```
 
 One final step, you need to initialize the database. Just run `python3 setup.py` and that's it. It will create a sqlite3 db file in the root folder.
