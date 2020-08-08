@@ -4,6 +4,7 @@ from providers.zonaprop import Zonaprop
 from providers.argenprop import Argenprop
 from providers.mercadolibre import Mercadolibre
 from providers.properati import Properati
+from providers.inmobusqueda import Inmobusqueda
 
 def register_property(conn, prop):
     stmt = 'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
@@ -47,5 +48,7 @@ def get_instance(provider_name, provider_data):
         return Mercadolibre(provider_name, provider_data)
     elif provider_name == 'properati':
         return Properati(provider_name, provider_data)
+    elif provider_name == 'inmobusqueda':
+        return Inmobusqueda(provider_name, provider_data)
     else:
         raise Exception('Unrecognized provider')
