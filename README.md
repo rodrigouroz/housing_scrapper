@@ -70,9 +70,9 @@ providers:
       - '/departamentos/alquiler/2-dormitorios/'
       - '/casas/alquiler/2-dormitorios/'
   properati:
-    base_url: 'https://www.properati.com.ar/'
+    base_url: 'https://www.properati.com.ar'
     sources:
-      - '/departamento/alquiler/ambientes:2/'
+      - '/departamento/alquiler/ambientes:2'
   inmobusqueda:
     base_url: 'https://www.inmobusqueda.com.ar'
     sources:
