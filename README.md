@@ -11,7 +11,7 @@ This initial version is aimed at the Argentinean market, therefore there are onl
 I'd love to receive comments, bugs, ideas, suggestion (I don't use Python daily, please help me be more pythonic if you'd like to), etc. Hit me at rodrigouroz@gmail.com or file an issue in the repo.
 
 ## Instalation
-This was tested with Python 3.7.
+This was tested with Python 3.8.
 
 To install dependencies:
 
