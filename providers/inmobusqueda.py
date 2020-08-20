@@ -27,7 +27,6 @@ class Inmobusqueda(BaseProvider):
 
                 title = link.get_text().strip()
                 internal_id = prop.find('div', class_='codigo').get_text().strip()
-                total += 1
                 yield {
                     'title': title, 
                     'url': href,
