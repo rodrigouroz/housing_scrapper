@@ -3,20 +3,28 @@ import yaml
 from providers.zonaprop import Zonaprop
 from providers.argenprop import Argenprop
 from providers.mercadolibre import Mercadolibre
+from providers.properati import Properati
+from providers.inmobusqueda import Inmobusqueda
 
 if __name__ == "__main__":
     # logging
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-    with open("configuration.yml", 'r') as ymlfile:
+    with open("../configuration.yml", 'r') as ymlfile:
         cfg = yaml.safe_load(ymlfile)
 
-    provider = Zonaprop('zonaprop', cfg['providers']['zonaprop'])    
+    provider = Zonaprop('zonaprop', cfg['providers']['zonaprop'])
     [print(prop) for prop in provider.next_prop()]
 
-    provider = Argenprop('argenprop', cfg['providers']['argenprop'])    
+    provider = Argenprop('argenprop', cfg['providers']['argenprop'])
     [print(prop) for prop in provider.next_prop()]
 
-    provider = Mercadolibre('mercadolibre', cfg['providers']['mercadolibre'])    
+    provider = Mercadolibre('mercadolibre', cfg['providers']['mercadolibre'])
+    [print(prop) for prop in provider.next_prop()]
+
+    provider = Properati('properati', cfg['providers']['properati'])
+    [print(prop) for prop in provider.next_prop()]
+
+    provider = Inmobusqueda('inmobusqueda', cfg['providers']['inmobusqueda'])
     [print(prop) for prop in provider.next_prop()]
 
