@@ -1,12 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
+import re
 from providers.base_provider import BaseProvider
 
 class Mercadolibre(BaseProvider):
     def props_in_source(self, source):
         page_link = self.provider_data['base_url'] + source + '_NoIndex_True'
         from_ = 1
+        regex = r"(MLA-\d*)"
 
         while(True):
             logging.info(f"Requesting {page_link}")
@@ -16,17 +18,19 @@ class Mercadolibre(BaseProvider):
                 break
             
             page_content = BeautifulSoup(page_response.content, 'lxml')
-            properties = page_content.find_all('li', class_='results-item')
+            properties = page_content.find_all('li', class_='ui-search-layout__item')
 
             if len(properties) == 0:
                 break
 
             for prop in properties:
-                internal_id = prop.find('div', class_='rowItem')['id']
-                section = prop.find('a', class_='item__info-link')
+                section = prop.find('a', class_='ui-search-result__content')
                 href = section['href']
-                title = section.find('div', class_='item__title').get_text().strip()
-                    
+                matches = re.search(regex, href)
+                internal_id = matches.group(1)
+                title_section = section.find('div', class_='ui-search-item__group--title')
+                title = title_section.find('span').get_text().strip() + ': ' + title_section.find('h2').get_text().strip()
+                
                 yield {
                     'title': title, 
                     'url': href,
