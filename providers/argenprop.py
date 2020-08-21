@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import logging
 import re
@@ -12,8 +11,8 @@ class Argenprop(BaseProvider):
 
         while(True):
             logging.info(f"Requesting {page_link}")
-            page_response = requests.get(page_link)
-
+            page_response = self.request(page_link)
+            
             if page_response.status_code != 200:
                 break
             
@@ -25,6 +24,9 @@ class Argenprop(BaseProvider):
 
             for prop in properties:
                 title = prop.find('h3', class_='card__title')['title']
+                price_section = prop.find('p', class_='card__price')
+                if price_section is not None:
+                    title = title + ' ' + price_section.get_text().strip()
                 href = prop.find('a', class_='card')['href']
                 matches = re.search(regex, href)
                 internal_id = matches.group(1)

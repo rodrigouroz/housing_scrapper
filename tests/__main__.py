@@ -13,8 +13,8 @@ if __name__ == "__main__":
     with open("configuration.yml", 'r') as ymlfile:
         cfg = yaml.safe_load(ymlfile)
 
-    #provider = Zonaprop('zonaprop', cfg['providers']['zonaprop'])
-    #[print(prop) for prop in provider.next_prop()]
+    provider = Zonaprop('zonaprop', cfg['providers']['zonaprop'])
+    [print(prop) for prop in provider.next_prop()]
 
     provider = Argenprop('argenprop', cfg['providers']['argenprop'])
     [print(prop) for prop in provider.next_prop()]

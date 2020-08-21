@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import logging
 import re
@@ -12,7 +11,7 @@ class Mercadolibre(BaseProvider):
 
         while(True):
             logging.info(f"Requesting {page_link}")
-            page_response = requests.get(page_link)
+            page_response = self.request(page_link)
 
             if page_response.status_code != 200:
                 break
@@ -24,13 +23,19 @@ class Mercadolibre(BaseProvider):
                 break
 
             for prop in properties:
-                section = prop.find('a', class_='ui-search-result__content')
+                section = prop.find('a', class_='ui-search-result__link')
+                if section is None:
+                    section = prop.find('a', class_='ui-search-result__content')
                 href = section['href']
                 matches = re.search(regex, href)
-                internal_id = matches.group(1)
+                internal_id = matches.group(1).replace('-', '')
+                price_section = section.find('span', class_='price-tag')
                 title_section = section.find('div', class_='ui-search-item__group--title')
-                title = title_section.find('span').get_text().strip() + ': ' + title_section.find('h2').get_text().strip()
-                
+                title = title_section.find('span').get_text().strip() + \
+                    ': ' + title_section.find('h2').get_text().strip()
+                if price_section is not None:
+                    title = title + ' ' + price_section.get_text().strip()
+        
                 yield {
                     'title': title, 
                     'url': href,

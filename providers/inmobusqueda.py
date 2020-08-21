@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import logging
 from providers.base_provider import BaseProvider
@@ -10,7 +9,7 @@ class Inmobusqueda(BaseProvider):
 
         while True:
             logging.info(f"Requesting {page_link}")
-            page_response = requests.get(page_link)
+            page_response = self.request(page_link)
 
             if page_response.status_code != 200:
                 break
@@ -26,6 +25,10 @@ class Inmobusqueda(BaseProvider):
                     return
 
                 title = link.get_text().strip()
+                price_section = prop.find('div', class_='resultadoPrecio')
+                if price_section is not None:
+                    title = title + ' ' + price_section.get_text().strip()
+                
                 internal_id = prop.find('div', class_='codigo').get_text().strip()
                 yield {
                     'title': title, 

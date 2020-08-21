@@ -1,4 +1,4 @@
-import requests
+#import requests
 from bs4 import BeautifulSoup
 import logging
 from providers.base_provider import BaseProvider
@@ -10,21 +10,24 @@ class Zonaprop(BaseProvider):
 
         while(True):
             logging.info(f"Requesting {page_link}")
-            page_response = requests.get(page_link)
-
+            page_response = self.request(page_link)
+            
             if page_response.status_code != 200:
                 break
             
             page_content = BeautifulSoup(page_response.content, 'lxml')
-            properties = page_content.find_all('li', class_='aviso')
+            properties = page_content.find_all('div', class_='posting-card')
 
             for prop in properties:
-                title = prop.find('a', class_='dl-aviso-a')['title']
+                title = prop.find('a', class_='go-to-posting').get_text().strip()
+                price_section = prop.find('span', class_='first-price')
+                if price_section is not None:
+                    title = title + ' ' + price_section['data-price']
                     
                 yield {
                     'title': title, 
-                    'url': self.provider_data['base_url'] + prop['data-href'],
-                    'internal_id': prop['data-aviso'],
+                    'url': self.provider_data['base_url'] + prop['data-to-posting'],
+                    'internal_id': prop['data-id'],
                     'provider': self.provider_name
                     }
 

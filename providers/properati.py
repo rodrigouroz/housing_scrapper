@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import logging
 from providers.base_provider import BaseProvider
@@ -14,7 +13,7 @@ class Properati(BaseProvider):
                 break
 
             logging.info("Requesting %s" % page_link)
-            page_response = requests.get(page_link)
+            page_response = self.request(page_link)
 
             if page_response.status_code != 200:
                 break
@@ -32,6 +31,9 @@ class Properati(BaseProvider):
             for prop in properties:
                 link = prop.find('a', class_='item-url')
                 title = link['title']
+                price_section = prop.find('p', class_='price')
+                if price_section is not None:
+                    title = title + ' ' + price_section.get_text().strip()
                 href = link['href']
                 internal_id = prop.find('a', class_='icon-fav')['data-property_id']
 
