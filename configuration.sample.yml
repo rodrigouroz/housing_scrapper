@@ -9,4 +9,4 @@ providers:
         base_url: <URL>
         sources:
           - <PATH>
-
+disable_ssl: true | false
