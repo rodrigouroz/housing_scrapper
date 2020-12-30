@@ -79,6 +79,8 @@ providers:
       - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'
 ```
 
+If you have issues with SSL certificates you can disable SSL validation with the attribute `disable_ssl`, by default it is enabled.
+
 One final step, you need to initialize the database. Just run `python3 setup.py` and that's it. It will create a sqlite3 db file in the root folder.
 
 You're all set. Now run `python3 main.py` and sit tight!
