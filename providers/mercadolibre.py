@@ -23,9 +23,7 @@ class Mercadolibre(BaseProvider):
                 break
 
             for prop in properties:
-                section = prop.find('a', class_='ui-search-result__link')
-                if section is None:
-                    section = prop.find('a', class_='ui-search-result__content')
+                section = prop.find('a', class_='ui-search-result__content')
                 href = section['href']
                 matches = re.search(regex, href)
                 internal_id = matches.group(1).replace('-', '')

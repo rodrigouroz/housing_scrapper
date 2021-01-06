@@ -6,7 +6,8 @@ from providers.base_provider import BaseProvider
 class Zonaprop(BaseProvider):
     def props_in_source(self, source):
         page_link = self.provider_data['base_url'] + source
-        page = 0
+        page = 1
+        processed_ids = []
 
         while(True):
             logging.info(f"Requesting {page_link}")
@@ -16,11 +17,15 @@ class Zonaprop(BaseProvider):
                 break
             
             page_content = BeautifulSoup(page_response.content, 'lxml')
-            properties = page_content.find_all('div', class_='posting-card')
+            properties = page_content.find_all('div', class_='postingCard')
 
             for prop in properties:
+                # if data-id was already processed we exit
+                if prop['data-id'] in processed_ids:
+                    return
+                processed_ids.append(prop['data-id'])
                 title = prop.find('a', class_='go-to-posting').get_text().strip()
-                price_section = prop.find('span', class_='first-price')
+                price_section = prop.find('span', class_='firstPrice')
                 if price_section is not None:
                     title = title + ' ' + price_section['data-price']
                     
@@ -32,5 +37,5 @@ class Zonaprop(BaseProvider):
                     }
 
             page += 1
-            page_link = self.provider_data['base_url'] + source + f"--pagina-{page}"
+            page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")
     
