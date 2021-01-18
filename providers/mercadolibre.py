@@ -14,6 +14,7 @@ class Mercadolibre(BaseProvider):
             page_response = self.request(page_link)
 
             if page_response.status_code != 200:
+                logging.error(page_response.status_code + ' - ' + page_response.reason)
                 break
             
             page_content = BeautifulSoup(page_response.content, 'lxml')
