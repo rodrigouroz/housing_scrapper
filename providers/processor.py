@@ -5,6 +5,7 @@ from providers.argenprop import Argenprop
 from providers.mercadolibre import Mercadolibre
 from providers.properati import Properati
 from providers.inmobusqueda import Inmobusqueda
+from providers.lavoz import Lavoz
 
 def register_property(conn, prop):
     stmt = 'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
@@ -36,7 +37,7 @@ def process_properties(provider_name, provider_data):
                 logging.info('It is a new one')
                 register_property(conn, prop)
                 new_properties.append(prop)
-                    
+
     return new_properties
 
 def get_instance(provider_name, provider_data):
@@ -50,5 +51,7 @@ def get_instance(provider_name, provider_data):
         return Properati(provider_name, provider_data)
     elif provider_name == 'inmobusqueda':
         return Inmobusqueda(provider_name, provider_data)
+    elif provider_name == 'lavoz':
+        return Lavoz(provider_name, provider_data)
     else:
         raise Exception('Unrecognized provider')
