@@ -1,7 +1,7 @@
 import logging
 import cloudscraper
 from abc import ABC, abstractmethod
-from providers.hostname_ignoring_adapter import HostNameIgnoringAdapter
+from lib.hostname_ignoring_adapter import HostNameIgnoringAdapter
 import yaml
 
 # configuration    

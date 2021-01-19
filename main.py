@@ -3,7 +3,7 @@
 import logging
 import yaml
 import sys
-from notifier import Notifier
+from lib.notifier import Notifier
 from providers.processor import process_properties
 
 # logging
@@ -13,7 +13,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 with open("configuration.yml", 'r') as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 
-notifier = Notifier.get_instance(cfg['notifier'])
+notifier = Notifier.get_instance(cfg['notifier'], cfg['disable_ssl'])
 
 new_properties = []
 for provider_name, provider_data in cfg['providers'].items():
