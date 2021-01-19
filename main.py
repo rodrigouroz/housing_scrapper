@@ -13,7 +13,11 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 with open("configuration.yml", 'r') as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 
-notifier = Notifier.get_instance(cfg['notifier'], cfg['disable_ssl'])
+disable_ssl = False
+if 'disable_ssl' in cfg:
+    disable_ssl = cfg['disable_ssl']
+
+notifier = Notifier.get_instance(cfg['notifier'], disable_ssl)
 
 new_properties = []
 for provider_name, provider_data in cfg['providers'].items():
