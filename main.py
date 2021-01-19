@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from config import Config
 import logging
 import yaml
 import sys
@@ -9,18 +10,17 @@ from providers.processor import process_properties
 # logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# configuration    
-with open("configuration.yml", 'r') as ymlfile:
-    cfg = yaml.safe_load(ymlfile)
+# configuration
+cfg = Config()
 
 disable_ssl = False
 if 'disable_ssl' in cfg:
-    disable_ssl = cfg['disable_ssl']
+    disable_ssl = cfg.get('disable_ssl')
 
-notifier = Notifier.get_instance(cfg['notifier'], disable_ssl)
+notifier = Notifier.get_instance(cfg.get('notifier'), disable_ssl)
 
 new_properties = []
-for provider_name, provider_data in cfg['providers'].items():
+for provider_name, provider_data in cfg.get('providers').items():
     try:
         logging.info(f"Processing provider {provider_name}")
         new_properties += process_properties(provider_name, provider_data)
