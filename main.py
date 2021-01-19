@@ -31,3 +31,10 @@ if len(new_properties) > 0:
     notifier.notify(new_properties)
 else:
     notifier.bad_news()
+
+failed_props = notifier.get_failed()
+# TODO: Do something more about failed properties, maybe:
+# remove them from DB to try notifying about them later?
+if (len(failed_props) > 0):
+    failed_props = ', '.join([f"{prop['title']} - {prop['url']}" for prop in failed_props])
+    logging.error(f"Failed notifying about this properties: {failed_props}")

@@ -11,6 +11,7 @@ class NullNotifier:
 
 class Notifier(NullNotifier):
     def __init__(self, config, disable_ssl):
+        self.failed = []
         logging.info(f"Setting up bot with token {config['token']}")
         self.config = config
         if disable_ssl:
@@ -25,9 +26,13 @@ class Notifier(NullNotifier):
 
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
-            self.bot.send_message(chat_id=self.config['chat_id'], 
-                    text=f"[{prop['title']}]({prop['url']})",
-                    parse_mode=telegram.ParseMode.MARKDOWN)
+            try:
+                self.bot.send_message(chat_id=self.config['chat_id'], 
+                        text=f"[{prop['title']}]({prop['url']})",
+                        parse_mode=telegram.ParseMode.MARKDOWN)
+            except:
+                self.failed.append(prop)
+
 
     def test(self, message):
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
@@ -43,3 +48,6 @@ class Notifier(NullNotifier):
         self.bot.send_message(chat_id=self.config['chat_id'], 
                 text=self.message_composer.get_bad_message(),
                 parse_mode=telegram.ParseMode.MARKDOWN)
+
+    def get_failed(self):
+        return self.failed-
