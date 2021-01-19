@@ -1,3 +1,4 @@
+from message_composer import MessageComposer
 import telegram
 import logging
 import random
@@ -16,12 +17,11 @@ class Notifier(NullNotifier):
             self.bot = telegram.Bot(token=self.config['token'], request=SSLlessSession())
         else:
             self.bot = telegram.Bot(token=self.config['token'])
-        
+        self.message_composer = MessageComposer(config)
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
-        text = random.choice(self.config['messages'])
-        self.bot.send_message(chat_id=self.config['chat_id'], text=text)
+        self.bot.send_message(chat_id=self.config['chat_id'], text=self.message_composer.get_good_message())
 
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
@@ -38,3 +38,8 @@ class Notifier(NullNotifier):
             return Notifier(config, disable_ssl)
         else:
             return NullNotifier()
+
+    def bad_news(self):
+        self.bot.send_message(chat_id=self.config['chat_id'], 
+                text=self.message_composer.get_bad_message(),
+                parse_mode=telegram.ParseMode.MARKDOWN)

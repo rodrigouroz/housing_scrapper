@@ -1,16 +1,18 @@
 from config import Config
 from telegram.ext import Updater, CommandHandler
+from message_composer import MessageComposer
 
-def refresh(update, context):
-    update.message.reply_text("Actualizando propiedades disponibles...")
-    exec(open("main.py").read())
+class RefreshCommand:
+    def __init__(self):
+        self.config = Config().get('notifier')
+        self.message_composer = MessageComposer(self.config)
+        updater = Updater(self.config['token'], use_context=True)
+        dp = updater.dispatcher
+        dp.add_handler(CommandHandler("refresh", self.refresh))
+        updater.start_polling()
+        updater.idle()
 
-def init():
-    cfg = Config().get('notifier')
-    updater = Updater(cfg['token'], use_context=True)
-    dp = updater.dispatcher
-    dp.add_handler(CommandHandler("refresh", refresh))
-    updater.start_polling()
-    updater.idle()
+    def refresh(self, update, context):
+        update.message.reply_text(self.message_composer.get_refresh_message())
+        exec(open("main.py").read())
 
-init()

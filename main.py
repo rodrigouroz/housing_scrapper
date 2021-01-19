@@ -29,3 +29,5 @@ for provider_name, provider_data in cfg.get('providers').items():
 
 if len(new_properties) > 0:
     notifier.notify(new_properties)
+else:
+    notifier.bad_news()

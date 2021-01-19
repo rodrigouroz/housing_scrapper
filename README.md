@@ -42,9 +42,15 @@ With the authorization token and the chat id you can now configure the notifier.
 
 ```yaml
 notifier:
-    messages:
+    refresh_command_messages:
+      - 'Running your searches!'
+      - 'You\'ve forced me to search and I will Obey'
+    good_news_messages:
       - 'Hey, I have found new properties. Check them out:'
       - 'I hope it is lucky day today:'
+    bad_news_messages:
+      - 'Hmmm sorry, there no house today.'
+      - 'Tomorrow will be a better day. Zero found.'
     enabled: true
     chat_id: <CHAT_ID>
     token: <TOKEN>
@@ -96,3 +102,21 @@ To test: `python3 -m tests`
 That's up to you. What I've found more useful is to run it once an hour. For that I put it in the crontab:
 
 `0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 main.py >> run.log 2>&1`
+
+## Telegram Bot Commands:
+
+The commands to be able to work you must run the listening daemon to run the daemon issue the following command:
+
+`python3 listen_commands.py`
+
+### Refresh
+
+Using /refresh command in your chat with the bot, it will manually trigger the configured searches ideal for anxious people.
+
+## Troubleshooting
+
+* If you receive an error from the telegram driver that states:
+
+    "group chat was migrated to a supergroup chat"
+
+    Then change the chat ID config in your configuration.yml file to the newly specified one
