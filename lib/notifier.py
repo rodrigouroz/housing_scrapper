@@ -50,4 +50,4 @@ class Notifier(NullNotifier):
                 parse_mode=telegram.ParseMode.MARKDOWN)
 
     def get_failed(self):
-        return self.failed-
+        return self.failed

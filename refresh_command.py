@@ -15,4 +15,3 @@ class RefreshCommand:
     def refresh(self, update, context):
         update.message.reply_text(self.message_composer.get_refresh_message())
         exec(open("main.py").read())
-
