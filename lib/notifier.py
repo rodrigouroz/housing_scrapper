@@ -29,9 +29,6 @@ class Notifier(NullNotifier):
                     text=f"[{prop['title']}]({prop['url']})",
                     parse_mode=telegram.ParseMode.MARKDOWN)
 
-    def test(self, message):
-        self.bot.send_message(chat_id=self.config['chat_id'], text=message)
-
     @staticmethod
     def get_instance(config, disable_ssl = False):
         if config['enabled']:
