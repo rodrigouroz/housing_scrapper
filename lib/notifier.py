@@ -18,7 +18,7 @@ class Notifier(NullNotifier):
             self.bot = telegram.Bot(token=self.config['token'], request=SSLlessSession())
         else:
             self.bot = telegram.Bot(token=self.config['token'])
-        self.message_composer = MessageComposer(config)
+        self.message_composer = MessageComposer(config)        
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
