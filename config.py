@@ -7,3 +7,6 @@ class Config:
 
     def get(self, section):
         return self.cfg[section]
+
+    def has(self, section):
+        return section in self.cfg

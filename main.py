@@ -14,7 +14,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 cfg = Config()
 
 disable_ssl = False
-if 'disable_ssl' in cfg:
+if cfg.has('disable_ssl'):
     disable_ssl = cfg.get('disable_ssl')
 
 notifier = Notifier.get_instance(cfg.get('notifier'), disable_ssl)
