@@ -23,7 +23,6 @@ class Notifier(NullNotifier):
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
         self.bot.send_message(chat_id=self.config['chat_id'], text=self.message_composer.get_good_message())
-
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
             try:
@@ -32,7 +31,6 @@ class Notifier(NullNotifier):
                         parse_mode=telegram.ParseMode.MARKDOWN)
             except:
                 self.failed.append(prop)
-
 
     def test(self, message):
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
