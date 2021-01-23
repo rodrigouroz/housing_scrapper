@@ -109,6 +109,12 @@ The commands to be able to work you must run the listening daemon to run the dae
 
 `python3 listen_commands.py`
 
+### Contribuiting:
+
+To enable the debugger in the commands listener issue the following command:
+
+`ENABLE_DEBUGGER=true python3 listen_commands.py`
+
 ### Refresh
 
 Using /refresh command in your chat with the bot, it will manually trigger the configured searches ideal for anxious people.

@@ -6,16 +6,7 @@ from lib.config import Config
 from commands.refresh_command import RefreshCommand
 from commands.searches_command import SearchesCommand
 
-def run_debugger():
-    import debugpy
-    # 5678 is the default attach port in the VS Code debug configurations. Unless a host and port are specified, host defaults to 127.0.0.1
-    debugpy.listen(5678)
-    print("Waiting for debugger attach")
-    debugpy.wait_for_client()
-    debugpy.breakpoint()
-    print('break on this line')
-
-run_debugger()
+import lib.debugger
 
 class Listener:
     def __init__(self):
