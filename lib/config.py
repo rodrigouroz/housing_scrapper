@@ -10,3 +10,9 @@ class Config:
 
     def has(self, section):
         return section in self.cfg
+
+    def get_disable_ssl(self):
+        disable_ssl = False
+        if self.has('disable_ssl'):
+            disable_ssl = self.get('disable_ssl')
+        return disable_ssl
