@@ -29,13 +29,12 @@ Creating the bot will give you an authorization token. Save it for later, you'll
 
 A bot can't talk with you directly, you have two options: you talk to it first, thus allowing it to reply to you, or you can add it to a group. Whatever option you choose, you need to get the `chat_id` of either your account or the group.
 
-After you've done either of the above, run this little script to find the `chat_id` (replace with your authorization token):
+After you've done either of the above, run this command script to find the `chat_id` (it will use your authorization token configured in configuration.yml):
 
-```python
-import telegram
-bot = telegram.Bot(token=MY_TOKEN)
-print([u.message.chat.id for u in bot.get_updates()])
+```bash
+python3 get_chat_ids.py
 ```
+
 You'll see a list with an element, that's the `chat_id` you need to save for later. Write it down :-)
 
 With the authorization token and the chat id you can now configure the notifier. Here's an example:
@@ -83,6 +82,10 @@ providers:
     base_url: 'https://www.inmobusqueda.com.ar'
     sources:
       - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'
+  remax:
+    base_url: 'https://www.remax.com.ar/listings'
+    sources:
+      - '/rent?page=1&pageSize=24&sort=%2Bid&in:operationId=2&in:typeId=1,2,3,4,5,6,7,8&lte:price=70000&eq:currencyId=2&in:totalRooms=2,3&eq:cityId=25024&label=Capital%20Federal,%20Comuna%20Nro.%2014,%20%3Cb%3EPalermo%3C%2Fb%3E&filterCount=4&viewMode=list'
 ```
 
 If you have issues with SSL certificates you can disable SSL validation with the attribute `disable_ssl`, by default it is enabled.
