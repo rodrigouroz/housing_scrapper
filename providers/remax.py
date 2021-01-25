@@ -50,7 +50,7 @@ class Remax(BaseProvider):
 
     def get_pagination(self, page_link, page_number):
         parsed_listing = furl(page_link)
-        parsed_listing.set({"page": page_number})
-        parsed_listing.set({"pageSize": 24})
+        parsed_listing.remove(['page', 'pageSize'])
+        parsed_listing.add({"page": page_number, "pageSize": 24})
         return parsed_listing.url
         
