@@ -2,6 +2,9 @@ import yaml
 
 class Config:
     def __init__(self):
+        self.load()
+
+    def load(self):
         with open("configuration.yml", 'r') as ymlfile:
             self.cfg = yaml.safe_load(ymlfile)
 

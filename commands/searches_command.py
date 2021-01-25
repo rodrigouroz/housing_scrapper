@@ -3,6 +3,7 @@ from commands.base_command import BaseCommand
 class SearchesCommand(BaseCommand):
     def run(self, update, context):
         messages = []
+        self.config.load()
         providers_config = self.config.get('providers')
         for provider_key in providers_config.keys():
             messages.append(f"> {provider_key}:")
