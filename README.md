@@ -112,6 +112,14 @@ The commands to be able to work you must run the listening daemon to run the dae
 
 `python3 listen_commands.py`
 
+The available commands are the following (you can use this text as a BotFather command list):
+
+```
+/refresh - update properties and send notifications
+/searches - show configured searches
+/today - show last 24 hrs found properties
+```
+
 ### Contribuiting:
 
 To enable the debugger in the commands listener issue the following command:
