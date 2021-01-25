@@ -9,6 +9,5 @@ def run_debugger():
   debugpy.breakpoint()
   print('break on this line')
 
-
 if (os.environ.get('ENABLE_DEBUGGER')):
   run_debugger()

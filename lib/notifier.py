@@ -26,12 +26,16 @@ class Notifier(NullNotifier):
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
             try:
-                self.__send_markdown_message(f"[{prop['title']}]({prop['url']})")
+                self.__send_markdown_message(Notifier.get_prop_markdown(prop))
             except:
                 self.failed.append(prop)
 
     def __send_message(self, message):
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
+
+    @staticmethod
+    def get_prop_markdown(prop):
+        return f"[{prop['title']}]({prop['url']})"
 
     @staticmethod
     def get_instance(config, disable_ssl = False):
