@@ -1,3 +1,4 @@
+import logging
 import time
 import sqlite3
 
@@ -29,12 +30,19 @@ class Dao:
         try:
             self.connection.execute(stmt, property)
         except Exception as e:
-            print(e)
-    
+            logging.error(e)
+
     def get_today(self):
         stmt = "SELECT * FROM properties WHERE captured_date >= datetime(:today_date, 'unixepoch')"
         last_day_epoch = time.time() - 24 * 3600
         return self.__run_select(stmt, {"today_date": last_day_epoch})
+
+    def delete(self, prop):
+        stmt = 'DELETE FROM properties WHERE internal_id = :internal_id AND provider = :provider;'
+        try:
+            self.connection.execute(stmt, {'internal_id': prop['internal_id'], 'provider': prop['provider']})
+        except Exception as e:
+            logging.error(e)
 
     def close(self):
         self.connection.close()

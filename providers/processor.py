@@ -23,16 +23,16 @@ def process_properties(provider_name, provider_data):
     return new_properties
 
 def get_instance(provider_name, provider_data):
-    # if provider_name == 'zonaprop':
-    #     return Zonaprop(provider_name, provider_data)
-    # elif provider_name == 'argenprop':
-    #     return Argenprop(provider_name, provider_data)
-    # elif provider_name == 'mercadolibre':
-    #     return Mercadolibre(provider_name, provider_data)
-    # elif provider_name == 'properati':
-    #     return Properati(provider_name, provider_data)
-    # elif provider_name == 'inmobusqueda':
-    #     return Inmobusqueda(provider_name, provider_data)
+    if provider_name == 'zonaprop':
+        return Zonaprop(provider_name, provider_data)
+    elif provider_name == 'argenprop':
+        return Argenprop(provider_name, provider_data)
+    elif provider_name == 'mercadolibre':
+        return Mercadolibre(provider_name, provider_data)
+    elif provider_name == 'properati':
+        return Properati(provider_name, provider_data)
+    elif provider_name == 'inmobusqueda':
+        return Inmobusqueda(provider_name, provider_data)
     if provider_name == 'remax':
         return Remax(provider_name, provider_data)
     else:
