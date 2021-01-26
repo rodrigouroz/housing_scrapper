@@ -6,7 +6,6 @@ from lib.notifier import Notifier
 from providers.processor import process_properties
 from lib.dao import Dao
 from lib.debugger import run_debugger
-run_debugger()
 import logging
 from lib.logger_config import configure_logging
 configure_logging(logging)
