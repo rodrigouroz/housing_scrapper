@@ -29,8 +29,10 @@ class Dao:
         stmt = 'INSERT INTO properties (internal_id, provider, url, title) VALUES (:internal_id, :provider, :url, :title)'
         try:
             self.connection.execute(stmt, property)
+            self.connection.commit()
         except Exception as e:
             logging.error(e)
+            self.connection.rollback()
 
     def get_today(self):
         stmt = "SELECT * FROM properties WHERE captured_date >= datetime(:today_date, 'unixepoch')"
