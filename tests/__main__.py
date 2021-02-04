@@ -5,6 +5,7 @@ from providers.argenprop import Argenprop
 from providers.mercadolibre import Mercadolibre
 from providers.properati import Properati
 from providers.inmobusqueda import Inmobusqueda
+from providers.remax import Remax
 
 if __name__ == "__main__":
     # logging
@@ -26,5 +27,8 @@ if __name__ == "__main__":
     [print(prop) for prop in provider.next_prop()]
 
     provider = Inmobusqueda('inmobusqueda', cfg['providers']['inmobusqueda'])
+    [print(prop) for prop in provider.next_prop()]
+    
+    provider = Remax('remax', cfg['providers']['remax'])
     [print(prop) for prop in provider.next_prop()]
 

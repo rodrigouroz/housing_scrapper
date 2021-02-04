@@ -29,22 +29,27 @@ Creating the bot will give you an authorization token. Save it for later, you'll
 
 A bot can't talk with you directly, you have two options: you talk to it first, thus allowing it to reply to you, or you can add it to a group. Whatever option you choose, you need to get the `chat_id` of either your account or the group.
 
-After you've done either of the above, run this little script to find the `chat_id` (replace with your authorization token):
+After you've done either of the above, run this command script to find the `chat_id` (it will use your authorization token configured in configuration.yml):
 
-```python
-import telegram
-bot = telegram.Bot(token=MY_TOKEN)
-print([u.message.chat.id for u in bot.get_updates()])
+```bash
+python3 get_chat_ids.py
 ```
+
 You'll see a list with an element, that's the `chat_id` you need to save for later. Write it down :-)
 
 With the authorization token and the chat id you can now configure the notifier. Here's an example:
 
 ```yaml
 notifier:
-    messages:
+    refresh_command_messages:
+      - 'Running your searches!'
+      - 'You\'ve forced me to search and I will Obey'
+    good_news_messages:
       - 'Hey, I have found new properties. Check them out:'
       - 'I hope it is lucky day today:'
+    bad_news_messages:
+      - 'Hmmm sorry, there no house today.'
+      - 'Tomorrow will be a better day. Zero found.'
     enabled: true
     chat_id: <CHAT_ID>
     token: <TOKEN>
@@ -77,6 +82,10 @@ providers:
     base_url: 'https://www.inmobusqueda.com.ar'
     sources:
       - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'
+  remax:
+    base_url: 'https://www.remax.com.ar/listings'
+    sources:
+      - '/rent?page=1&pageSize=24&sort=%2Bid&in:operationId=2&in:typeId=1,2,3,4,5,6,7,8&lte:price=70000&eq:currencyId=2&in:totalRooms=2,3&eq:cityId=25024&label=Capital%20Federal,%20Comuna%20Nro.%2014,%20%3Cb%3EPalermo%3C%2Fb%3E&filterCount=4&viewMode=list'
 ```
 
 If you have issues with SSL certificates you can disable SSL validation with the attribute `disable_ssl`, by default it is enabled.
@@ -96,3 +105,35 @@ To test: `python3 -m tests`
 That's up to you. What I've found more useful is to run it once an hour. For that I put it in the crontab:
 
 `0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 main.py >> run.log 2>&1`
+
+## Telegram Bot Commands:
+
+The commands to be able to work you must run the listening daemon to run the daemon issue the following command:
+
+`python3 listen_commands.py`
+
+The available commands are the following (you can use this text as a BotFather command list):
+
+```
+/refresh - update properties and send notifications
+/searches - show configured searches
+/today - show last 24 hrs found properties
+```
+
+### Contribuiting:
+
+To enable the debugger in the commands listener issue the following command:
+
+`ENABLE_DEBUGGER=true python3 listen_commands.py`
+
+### Refresh
+
+Using /refresh command in your chat with the bot, it will manually trigger the configured searches ideal for anxious people.
+
+## Troubleshooting
+
+* If you receive an error from the telegram driver that states:
+
+    "group chat was migrated to a supergroup chat"
+
+    Then change the chat ID config in your configuration.yml file to the newly specified one

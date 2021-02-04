@@ -1,26 +1,24 @@
 #!/usr/bin/env python
-
-import logging
+from lib.config import Config
 import yaml
 import sys
 from lib.notifier import Notifier
 from providers.processor import process_properties
+from lib.dao import Dao
+from lib.debugger import run_debugger
+import logging
+from lib.logger_config import configure_logging
+configure_logging(logging)
 
-# logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.info("Starting Crawler...")
 
-# configuration    
-with open("configuration.yml", 'r') as ymlfile:
-    cfg = yaml.safe_load(ymlfile)
+# configuration
+cfg = Config()
 
-disable_ssl = False
-if 'disable_ssl' in cfg:
-    disable_ssl = cfg['disable_ssl']
-
-notifier = Notifier.get_instance(cfg['notifier'], disable_ssl)
+notifier = Notifier.get_instance(cfg.get('notifier'), cfg.get_disable_ssl())
 
 new_properties = []
-for provider_name, provider_data in cfg['providers'].items():
+for provider_name, provider_data in cfg.get('providers').items():
     try:
         logging.info(f"Processing provider {provider_name}")
         new_properties += process_properties(provider_name, provider_data)
@@ -29,3 +27,11 @@ for provider_name, provider_data in cfg['providers'].items():
 
 if len(new_properties) > 0:
     notifier.notify(new_properties)
+else:
+    notifier.bad_news()
+
+failed_props = notifier.get_failed()
+
+if (len(failed_props) > 0):
+    failed_props = ', '.join([f"{prop['title']} - {prop['url']}" for prop in failed_props])
+    logging.error(f"Failed notifying about this properties: {failed_props}")
