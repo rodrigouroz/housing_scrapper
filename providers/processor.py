@@ -33,7 +33,7 @@ def get_instance(provider_name, provider_data):
         return Properati(provider_name, provider_data)
     elif provider_name == 'inmobusqueda':
         return Inmobusqueda(provider_name, provider_data)
-    if provider_name == 'remax':
+    elif provider_name == 'remax':
         return Remax(provider_name, provider_data)
     else:
         raise Exception('Unrecognized provider')

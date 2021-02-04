@@ -33,7 +33,7 @@ class Remax(BaseProvider):
                 break
 
             for prop in properties:
-                title = prop['title']
+                title =  prop['slug'].replace('-', ' ').title()
                 title = title + ' $' + str(prop['price'])
                 href = self.provider_data['base_url'] + '/' + prop['slug']
                 internal_id = prop['id']
