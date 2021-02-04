@@ -39,12 +39,32 @@ class Dao:
         last_day_epoch = time.time() - 24 * 3600
         return self.__run_select(stmt, {"today_date": last_day_epoch})
 
+    def get_pending_to_notify(self):
+        stmt = "SELECT * FROM properties WHERE notified_date IS NULL ORDER BY captured_date DESC LIMIT 10;"
+        return self.__run_select(stmt, {})
+
+    def mark_as_notified(self, prop):
+        current_timestamp = time.time()
+        stmt = "UPDATE properties SET notified_date = :current_timestamp WHERE internal_id = :internal_id AND provider = :provider;"
+        try:
+            self.connection.execute(stmt, {
+                'internal_id': prop['internal_id'],
+                'provider': prop['provider'],
+                'current_timestamp': current_timestamp
+            })
+            self.connection.commit()
+        except Exception as e:
+            logging.error(e)
+            self.connection.rollback()
+
     def delete(self, prop):
         stmt = 'DELETE FROM properties WHERE internal_id = :internal_id AND provider = :provider;'
         try:
             self.connection.execute(stmt, {'internal_id': prop['internal_id'], 'provider': prop['provider']})
+            self.connection.commit()
         except Exception as e:
             logging.error(e)
+            self.connection.rollback()
 
     def close(self):
         self.connection.close()

@@ -4,6 +4,7 @@ import logging
 import random
 from lib.sslless_session import SSLlessSession
 import yaml
+from lib.dao import Dao
 
 class NullNotifier:
     def notify(self, properties):
@@ -11,6 +12,7 @@ class NullNotifier:
 
 class Notifier(NullNotifier):
     def __init__(self, config, disable_ssl):
+        self.dao = Dao()
         self.failed = []
         logging.info(f"Setting up bot with token {config['token']}")
         self.config = config
@@ -27,6 +29,7 @@ class Notifier(NullNotifier):
             logging.info(f"Notifying about {prop['url']}")
             try:
                 self.__send_markdown_message(Notifier.get_prop_markdown(prop))
+                self.dao.mark_as_notified(prop)
             except:
                 self.failed.append(prop)
 

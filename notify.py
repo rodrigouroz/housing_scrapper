@@ -10,20 +10,15 @@ import logging
 from lib.logger_config import configure_logging
 configure_logging(logging)
 
-logging.info("Starting Crawler...")
+logging.info("Starting Notifier...")
 
 # configuration
 cfg = Config()
 
 notifier = Notifier.get_instance(cfg.get('notifier'), cfg.get_disable_ssl())
 
-new_properties = []
-for provider_name, provider_data in cfg.get('providers').items():
-    try:
-        logging.info(f"Processing provider {provider_name}")
-        new_properties += process_properties(provider_name, provider_data)
-    except:
-        logging.error(f"Error processing provider {provider_name}.\n{sys.exc_info()[0]}")
+dao = Dao()
+new_properties = dao.get_pending_to_notify()
 
 if len(new_properties) > 0:
     notifier.notify(new_properties)

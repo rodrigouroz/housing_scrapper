@@ -92,7 +92,9 @@ If you have issues with SSL certificates you can disable SSL validation with the
 
 One final step, you need to initialize the database. Just run `python3 setup.py` and that's it. It will create a sqlite3 db file in the root folder.
 
-You're all set. Now run `python3 main.py` and sit tight!
+You're all set. Now run `python3 crawl.py` and sit tight!
+
+This will fill the database with new properties's data, now you need to run the notifier to get the telegram messages with info about newly scrapped properties, to do this just run: `python3 notify.py`
 
 ## Testing
 
@@ -104,7 +106,13 @@ To test: `python3 -m tests`
 
 That's up to you. What I've found more useful is to run it once an hour. For that I put it in the crontab:
 
-`0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 main.py >> run.log 2>&1`
+For the crawler process:
+
+`0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 crawl.py >> crawler_runs.log 2>&1`
+
+For the notifier process:
+
+`0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 notify.py >> notifier_runs.log 2>&1`
 
 ## Telegram Bot Commands:
 
