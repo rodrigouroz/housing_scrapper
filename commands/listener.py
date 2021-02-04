@@ -6,6 +6,7 @@ from lib.config import Config
 from commands.refresh_command import RefreshCommand
 from commands.searches_command import SearchesCommand
 from commands.today_command import TodayCommand
+from commands.more_command import MoreCommand
 
 import lib.debugger
 
@@ -17,7 +18,8 @@ class Listener:
         self.commands = {
             'refresh': RefreshCommand,
             'searches': SearchesCommand,
-            'today': TodayCommand
+            'today': TodayCommand,
+            'more': MoreCommand
         }
         self.updater = Updater(self.notifier_config['token'], use_context=True)
         self.dispatcher = self.updater.dispatcher

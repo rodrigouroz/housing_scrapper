@@ -126,6 +126,7 @@ The available commands are the following (you can use this text as a BotFather c
 /refresh - update properties and send notifications
 /searches - show configured searches
 /today - show last 24 hrs found properties
+/more - notify about the next paged 10 unmarked properties
 ```
 
 ### Contribuiting:
