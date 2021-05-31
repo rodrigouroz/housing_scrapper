@@ -1,23 +1,21 @@
 #!/usr/bin/env python
-
-from config import Config
-import logging
+from lib.config import Config
 import yaml
 import sys
 from lib.notifier import Notifier
 from providers.processor import process_properties
+from lib.dao import Dao
+from lib.debugger import run_debugger
+import logging
+from lib.logger_config import configure_logging
+configure_logging(logging)
 
-# logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.info("Starting Crawler...")
 
 # configuration
 cfg = Config()
 
-disable_ssl = False
-if cfg.has('disable_ssl'):
-    disable_ssl = cfg.get('disable_ssl')
-
-notifier = Notifier.get_instance(cfg.get('notifier'), disable_ssl)
+notifier = Notifier.get_instance(cfg.get('notifier'), cfg.get_disable_ssl())
 
 new_properties = []
 for provider_name, provider_data in cfg.get('providers').items():
@@ -33,8 +31,7 @@ else:
     notifier.bad_news()
 
 failed_props = notifier.get_failed()
-# TODO: Do something more about failed properties, maybe:
-# remove them from DB to try notifying about them later?
+
 if (len(failed_props) > 0):
     failed_props = ', '.join([f"{prop['title']} - {prop['url']}" for prop in failed_props])
     logging.error(f"Failed notifying about this properties: {failed_props}")

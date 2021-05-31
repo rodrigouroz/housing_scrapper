@@ -30,6 +30,7 @@ sql_create_properties_table = """ CREATE TABLE IF NOT EXISTS properties (
                                     internal_id text NOT NULL,
                                     provider text NOT NULL,
                                     url text NOT NULL,
+                                    title text NOT NULL,
                                     captured_date integer DEFAULT CURRENT_TIMESTAMP
                                 ); """
 

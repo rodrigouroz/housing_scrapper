@@ -22,18 +22,20 @@ class Notifier(NullNotifier):
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
-        self.bot.send_message(chat_id=self.config['chat_id'], text=self.message_composer.get_good_message())
+        self.__send_message(self.message_composer.get_good_message())
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
             try:
-                self.bot.send_message(chat_id=self.config['chat_id'], 
-                        text=f"[{prop['title']}]({prop['url']})",
-                        parse_mode=telegram.ParseMode.MARKDOWN)
+                self.__send_markdown_message(Notifier.get_prop_markdown(prop))
             except:
                 self.failed.append(prop)
 
-    def test(self, message):
+    def __send_message(self, message):
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
+
+    @staticmethod
+    def get_prop_markdown(prop):
+        return f"[{prop['title']}]({prop['url']})"
 
     @staticmethod
     def get_instance(config, disable_ssl = False):
@@ -42,10 +44,13 @@ class Notifier(NullNotifier):
         else:
             return NullNotifier()
 
-    def bad_news(self):
+    def __send_markdown_message(self, message):
         self.bot.send_message(chat_id=self.config['chat_id'], 
-                text=self.message_composer.get_bad_message(),
+                text=message,
                 parse_mode=telegram.ParseMode.MARKDOWN)
+
+    def bad_news(self):
+        self.__send_markdown_message(self.message_composer.get_bad_message())
 
     def get_failed(self):
         return self.failed
