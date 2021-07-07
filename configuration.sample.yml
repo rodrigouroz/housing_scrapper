@@ -1,6 +1,10 @@
 notifier:
-    messages:
-      - 'A MESSAGE'
+    refresh_command_messages:
+      - 'SEARCHING'
+    good_news_messages:
+      - 'YEAY THIS PROPERTY IS FOR YOU!'
+    bad_news_messages:
+      - 'NO PROPERTIES FOUND'
     enabled: true
     chat_id: <CHAT_ID>
     token: <TOKEN>

@@ -4,15 +4,10 @@ from abc import ABC, abstractmethod
 from lib.hostname_ignoring_adapter import HostNameIgnoringAdapter
 import yaml
 
-# configuration    
-with open("configuration.yml", 'r') as ymlfile:
-    print('loading config')
-    cfg = yaml.safe_load(ymlfile)
+from lib.config import Config
 
-disable_ssl = False
+disable_ssl = Config().get_disable_ssl()
 
-if 'disable_ssl' in cfg:
-    disable_ssl = cfg['disable_ssl']
 class BaseProvider(ABC):
     def __init__(self, provider_name, provider_data):
         self.provider_name = provider_name
