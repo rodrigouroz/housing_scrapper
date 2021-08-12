@@ -24,8 +24,8 @@ for provider_name, provider_data in cfg['providers'].items():
     try:
         logging.info(f"Processing provider {provider_name}")
         new_properties += process_properties(provider_name, provider_data)
-    except:
-        logging.error(f"Error processing provider {provider_name}.\n{sys.exc_info()[0]}")
+    except Exception as e:
+        logging.error(f"Error processing provider {provider_name}.\n{str(e)}")
 
 if len(new_properties) > 0:
     notifier.notify(new_properties)
