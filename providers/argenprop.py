@@ -23,10 +23,10 @@ class Argenprop(BaseProvider):
                 break
 
             for prop in properties:
-                title = prop.find('h3', class_='card__title')['title']
+                title = prop.find('p', class_='card__title')
                 price_section = prop.find('p', class_='card__price')
                 if price_section is not None:
-                    title = title + ' ' + price_section.get_text().strip()
+                    title = title.get_text().strip() + ' ' + price_section.get_text().strip()
                 href = prop.find('a', class_='card')['href']
                 matches = re.search(regex, href)
                 internal_id = matches.group(1)
