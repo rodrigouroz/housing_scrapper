@@ -9,13 +9,13 @@ class Argenprop(BaseProvider):
         page = 0
         regex = r".*--(\d+)"
 
-        while(True):
+        while True:
             logging.info(f"Requesting {page_link}")
             page_response = self.request(page_link)
-            
+
             if page_response.status_code != 200:
                 break
-            
+
             page_content = BeautifulSoup(page_response.content, 'lxml')
             properties = page_content.find_all('div', class_='listing__item')
 
@@ -23,20 +23,26 @@ class Argenprop(BaseProvider):
                 break
 
             for prop in properties:
-                title = prop.find('h3', class_='card__title')['title']
+                title = prop.find('p', class_='card__title--primary')
+                if title is not None:
+                    title = title.get_text().strip()
                 price_section = prop.find('p', class_='card__price')
                 if price_section is not None:
-                    title = title + ' ' + price_section.get_text().strip()
-                href = prop.find('a', class_='card')['href']
+                    title += " " + price_section.get_text().strip()
+                href = prop.find("a", class_="card")
+                if href is not None:
+                    href = href["href"]
+                else:
+                    continue
                 matches = re.search(regex, href)
                 internal_id = matches.group(1)
-                    
+
                 yield {
                     'title': title, 
                     'url': self.provider_data['base_url'] + href,
                     'internal_id': internal_id,
                     'provider': self.provider_name
-                    }
+                }
 
             page += 1
-            page_link = self.provider_data['base_url'] + source + f"-pagina-{page}"
+            page_link = self.provider_data['base_url'] + source + f'-pagina-{page}'
